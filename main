@@ -105,7 +105,7 @@ local function flingLoop()
 					myHRP.CFrame = targetHRP.CFrame
 					-- Fling logic
 					local vel = myHRP.Velocity
-					myHRP.Velocity = vel * 10000 + Vector3.new(0, 10000, 0)
+					myHRP.Velocity = vel * 10000 + Vector3.new(99999, 10000, 542424)
 					RunService.RenderStepped:Wait()
 					myHRP.Velocity = vel
 					RunService.Stepped:Wait()
