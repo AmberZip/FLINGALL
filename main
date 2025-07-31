@@ -115,7 +115,6 @@ local function flingLoop()
 				end
 			end
 		end
-		task.wait(TELEPORT_DELAY)
 	end
 end
 
