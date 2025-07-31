@@ -19,7 +19,7 @@ screenGui.Parent = PlayerGui
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 180, 0, 100)
-frame.Position = UDim2.new(0.4, 0, 0.4, 0)
+frame.Position = UDim2.new(0, 10, 1, -110) -- Bottom-left corner
 frame.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
 frame.Active = true
 frame.Draggable = true
@@ -40,8 +40,8 @@ title.TextSize = 24
 title.Parent = header
 
 local toggleButton = Instance.new("TextButton")
-toggleButton.Size = UDim2.new(0, 140, 0, 40)
-toggleButton.Position = UDim2.new(0.5, -70, 0.55, 0)
+toggleButton.Size = UDim2.new(1, -20, 0, 40)
+toggleButton.Position = UDim2.new(0, 10, 0, 50)
 toggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 toggleButton.Text = "Fling All: OFF"
 toggleButton.TextColor3 = Color3.new(0, 0, 0)
@@ -72,6 +72,7 @@ end
 local flingAllEnabled = false
 local flingThread
 
+-- Protection Decal (used for detection)
 if not ReplicatedStorage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
 	local detection = Instance.new("Decal")
 	detection.Name = "juisdfj0i32i0eidsuf0iok"
@@ -83,7 +84,6 @@ local function flingLoop()
 	while flingAllEnabled do
 		local myHRP = getHRP(LocalPlayer)
 		if myHRP then
-			-- Find closest valid player
 			local closestPlayer, closestDistance = nil, TELEPORT_RADIUS + 1
 			for _, otherPlayer in ipairs(Players:GetPlayers()) do
 				if otherPlayer ~= LocalPlayer and not isSpectating(otherPlayer) then
@@ -103,6 +103,7 @@ local function flingLoop()
 				local targetHRP = getHRP(closestPlayer)
 				if targetHRP then
 					myHRP.CFrame = targetHRP.CFrame
+
 					-- Fling logic
 					local vel = myHRP.Velocity
 					myHRP.Velocity = vel * 10000 + Vector3.new(99999, 10000, 542424)
