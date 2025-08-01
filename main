@@ -19,7 +19,7 @@ screenGui.Parent = PlayerGui
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 180, 0, 100)
-frame.Position = UDim2.new(0, 10, 1, -110) -- Bottom-left corner
+frame.Position = UDim2.new(0, 10, 1, -110)
 frame.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
 frame.Active = true
 frame.Draggable = true
@@ -68,16 +68,16 @@ local function isSpectating(player)
 	return false
 end
 
--- Fling/Teleport Logic
-local flingAllEnabled = false
-local flingThread
-
 -- Protection Decal (used for detection)
 if not ReplicatedStorage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
 	local detection = Instance.new("Decal")
 	detection.Name = "juisdfj0i32i0eidsuf0iok"
 	detection.Parent = ReplicatedStorage
 end
+
+-- Fling/Teleport Logic
+local flingAllEnabled = false
+local flingThread
 
 local function flingLoop()
 	local movel = 0.1
@@ -102,21 +102,24 @@ local function flingLoop()
 			if closestPlayer then
 				local targetHRP = getHRP(closestPlayer)
 				if targetHRP then
-					myHRP.CFrame = targetHRP.CFrame
+					-- Instantly teleport very close
+					myHRP.CFrame = targetHRP.CFrame + Vector3.new(0, 2, 0)
 
-					-- Fling logic
-					local vel = myHRP.Velocity
-					myHRP.Velocity = vel * 10000 + Vector3.new(99999, 10000, 542424)
+					-- Insane directional fling force
+					local direction = (targetHRP.Position - myHRP.Position).Unit
+					local superVelocity = direction * 1e6 + Vector3.new(0, 1e5, 0)
+
+					-- Apply high velocity
+					myHRP.AssemblyLinearVelocity = superVelocity
+
+					-- Oscillate to keep flinging
 					RunService.RenderStepped:Wait()
-					myHRP.Velocity = vel
-					RunService.Stepped:Wait()
-					myHRP.Velocity = vel + Vector3.new(0, movel, 0)
+					myHRP.AssemblyLinearVelocity = Vector3.new(0, movel, 0)
 					movel = -movel
 				end
 			end
 		end
 
-		-- Prevent crashing
 		task.wait(0.01)
 	end
 end
