@@ -115,6 +115,9 @@ local function flingLoop()
 				end
 			end
 		end
+
+		-- Prevent crashing
+		task.wait(0.01)
 	end
 end
 
